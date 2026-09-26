@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<title>罗盘时钟 - 双语言版</title>
+<meta name="viewport" content="width=device-width, user-scalable=no">
+<style>
+*,body,dl,dd,ul,li {margin:0;padding:0}
+li {list-style:none}
+html {
+	--red:#A00;
+	--blue:#38F;
+	--green:#080;
+	--white:white;
+	--black:black;
+	--yellow:yellow;
+	color:#AAA;
+	user-select:none;
+	box-sizing:border-box;
+	background-color:#00001A
+}
+html:hover footer {visibility:unset}
+body {
+	margin:0 auto;
+	width:100vmin;
+	height:100vmin;
+	overflow:hidden;
+}
+section {
+	color:var(--bg);
+	cursor:pointer;
+	font-size:3vmin;
+	font-weight:700;
+	aspect-ratio:1/1;
+	display:grid;
+	place-items:center;
+	border-radius:50%;
+	animation:change-bg 8s linear infinite;
+}
+@keyframes change-bg {
+	0%   {--bg:var(--yellow)}
+	20%  {--bg:var(--red)}
+	40%  {--bg:blue}
+	60%  {--bg:var(--green)}
+	80%  {--bg:var(--white)}
+	100% {--bg:darkorchid}
+}
+section>* {
+	grid-area:1/1;
+	aspect-ratio:1/1;
+	display:grid;
+	place-items:center;
+	border-radius:50%;
+}
+section dl {
+	rotate:0deg;
+	transition:all .3s ease-in;
+}
+section dl>* {grid-area:1/1}
+section dl dd {
+	width:100%;
+	line-height:1;
+	text-align:center;
+	white-space:nowrap;
+	transform:translate(calc(var(--size) / 2));
+	opacity:0;
+	transition:all .8s ease-in;
+	
+	--lg:linear-gradient(90deg,
+		white,yellow,green,
+		yellow,red,
+		white,yellow,blue
+	);
+	animation:flow-dd 30s linear infinite;
+}
+section dl dd,
+section dl dd span {
+	background:var(--lg);
+	background-size:500% 200%;
+	background-clip:text;
+	-webkit-background-clip:text;
+	-webkit-text-fill-color:transparent;
+}
+section dl:nth-of-type(2n+1) dd {animation:flow-dd 20s ease-in-out 1s infinite}
+section dl:nth-of-type(1) dd {padding-top:5px}
+section dl dd span {
+	font-size:40%;
+	position:relative;top:5px;
+	padding-top:15px;
+	display:block;
+	--lg:linear-gradient(90deg,green);
+}
+section dl dd span:before {
+	content:'';
+	left:50%;
+	position:absolute;top:0;
+	width:7px;
+	height:7px;
+    background:#FF0;
+    border-radius:5em;
+    box-shadow:0 0 5px #FF0;
+}
+section dl dd span:after {
+	content:'';
+	position:absolute;top:3px;
+	width:0vmin;
+	left:50%;
+	height:2px;
+	border-radius:5em;
+	background:#FFFF0080;
+	opacity:0;
+	transition:all 1s ease-in-out;
+	box-shadow:0 0 5px #FF0;
+}
+section.start dl dd {opacity:.5;rotate:calc(var(--i) * var(--d))}
+section.start dl dd.curr {
+	--lg:linear-gradient(180deg,var(--white),var(--yellow),var(--green) 80%);
+	opacity:1;
+	background-size:100% 100%;
+}
+section.start dl dd.curr span:after {
+	opacity:1;
+	width:calc(50vmin - 1.5vmin);
+	transition:all 1s ease-in-out 1s;
+}
+@keyframes flow-dd {
+	0% {background-position:500% 50%}
+	100% {background-position:0 50%}
+}
+@keyframes flow-dl {
+	0% {box-shadow:0 0 0vmin var(--bg),inset 0 0 1vmin var(--bg)}
+	100% {box-shadow:0 0 10vmin var(--bg),inset 0 0 1vmin var(--bg)}
+}
+section dl dt {
+	--dt-wh:calc(var(--size) + 110%);
+	--bor-max:1vmin;
+	width:var(--dt-wh);
+	height:var(--dt-wh);
+	border-bottom:var(--bg) .1vmin solid;
+	border-radius:50%;
+	opacity:0.2;
+	transition:all .3s ease-in .7s;
+	animation:flow-dt var(--dt-s) ease-in infinite;
+}
+section.start dl dt {opacity:.7}
+section dl:nth-of-type(1) dt {
+	--bor-max:.3vmin;
+	--dt-wh:100%;
+}
+section dl:nth-of-type(1){
+	position:absolute;
+	--dt-s:1s;
+	--wh:0vmin;
+	width:var(--wh);
+	height:var(--wh);
+	opacity:.1;
+	font-size:0;
+	transition:all .5s ease-in .5s;
+	-webkit-app-region:drag;
+}
+section.start dl:nth-of-type(1) {
+	position:relative;z-index:5;
+	--wh:16vmin;
+	opacity:1;
+	font-size:5vmin;
+	transition:all .5s ease-in;
+	animation:flow-dl 1s ease-in infinite alternate;
+}
+section dl:nth-of-type(2){--size:25vmin;--dt-s:1s}
+section dl:nth-of-type(3){--size:40vmin;--dt-s:2s}
+section dl:nth-of-type(4){--size:58vmin;--dt-s:3s}
+section dl:nth-of-type(5){--size:74vmin;--dt-s:4s}
+section dl:nth-of-type(6){--size:90vmin;--dt-s:5s}
+@keyframes flow-dt {
+	0% {
+		rotate:0deg;
+		border-color:red;
+		border-width:.1vmin;
+	}
+	25% {border-color:yellow}
+	50% {
+		rotate:180deg;
+		border-color:green;
+		border-width:var(--bor-max);
+	}
+	75% {border-color:blue}
+	100% {
+		rotate:360deg;
+		border-color:red;
+		border-width:.1vmin;
+	}
+}
+section.cn {font-size:1.8vmin}
+section.cn.start dl:nth-of-type(1){font-size:180%}
+section.cn.start dl:nth-of-type(1) dd span {font-size:60%}
+section.kai {font-family:cursive,'楷体',KaiTi,Arial}
+section.song {font-family:fangsong,'宋体',Arial}
+footer {
+	visibility:hidden;
+	cursor:pointer;
+	font-size:12px;
+	position:absolute;bottom:0;right:0;z-index:2;
+	padding:0 5px;
+	background:#FFFFFF20;
+	display:flex;
+	border-radius:5em;
+}
+footer span {
+	padding:0 5px;
+}
+</style>
+</head>
+<body>
+<section id="clock" click="onCharset" hidden>
+	<dl :for="{{clock as idx=>item}}" style="--d:{{item.deg}}deg">
+		<dt></dt>
+		<dd :for="{{item.data as i=>v}}" style="--i:{{i}}">
+			<label>{{v.val}}</label>
+			<span :if="idx==0">{{item.week}}</span>
+		</dd>
+	</dl>
+</section>
+<footer id="footer" hidden>
+	<span click="onFamily">{{familyText[familyIdx]}}</span>
+</footer>
+<script>
+!function(s,n){
+	const c = {
+		zero(l=2){
+			return String(this).padStart(l,'0');
+		}
+	}
+	Object.assign(n,c);
+	Object.assign(s,c);
+}(String.prototype,Number.prototype);
+!function(DP){
+	const date = {
+		format(v){
+			const 
+				o = this,
+				m = (o.getMonth() + 1).zero(),
+				d = o.getDate().zero(),
+				Y = o.getFullYear(),
+				f = k => ({
+					Y,y:String(Y).slice(-2),
+					m,M:m,
+					d,D:d,
+					H:o.getHours().zero(),
+					h:o.getHours(),
+					Z: '星期'+'日一二三四五六'.charAt(o.getDay()),
+					i:o.getMinutes().zero(),
+					s:o.getSeconds().zero(),
+					q:Math.floor((o.getMonth() + 3) / 3),
+					S:o.getMilliseconds()
+				}[k]);
+			return v.replace(/[YMDHZymdhisqS]/g,f);
+		}
+	}
+	const vDate = Date;
+	Date = function(...args){
+		const [a,b]= args,
+			date   = new vDate(a),
+			isDate = isNaN(date.getTime()),
+			has    = /^[YMDHZymdhis]/.test(a),
+			is     = isDate&&has,
+			d      = new vDate(...(is?(b?[b]:[]):args));
+		return is?d.format(a):d;
+	}
+	Object.assign(DP,date);
+	Object.setPrototypeOf(Date,vDate);
+}(Date.prototype);
+
+class Import{
+	constructor(d){
+		Object.assign(this,d);
+		this.html = this.render();
+	}
+	render(){
+		return this.parse(this.tpl,this.data).replace(/<\/?block[\s\S]*?>/gi,'');
+	}
+	parse(tpl,data){
+		tpl=this.replaceFor(tpl,data);
+		tpl=this.replaceIf(tpl,data);
+		tpl=this.replaceBoolAttr(tpl,data);
+		tpl=this.replaceExp(tpl,data);
+		return tpl;
+	}
+	replaceBoolAttr(tpl,data){
+		return tpl.replace(/:(disabled|selected|checked|hidden)="([^"]+)"/gi,(match,attr,exp) => {
+			try {
+				const res = new Function('d',`with(d){return ${exp}}`)(data);
+				return res?attr:'';
+			} catch (e) {
+				return '';
+			}
+		});
+	}
+	replaceFor(tpl,data){
+		const reg = /<([a-z\d]+)\s+:for="{{0,2}([\w\.]+)(?:\s+as\s+([\w=>]+))?}{0,2}"([\s\S]*?)<\/\1>/gi;
+		while (reg.test(tpl)) {
+			tpl = tpl.replace(reg,(match,tag,lk,ik,body)=>{
+				!(ik||'').includes('=>') && (ik="index=>"+(ik||'item'));
+				const [idx,key] = ik.split('=>');
+				const list = lk.split('.').reduce((o,k)=>(o||{})[k],data)||[];
+				return list.map((d,i)=>{
+					const scope = {...data,[key]:d,[idx]:i};
+					return this.parse(`<${tag}${body}</${tag}>`,scope);
+				}).join('');
+			});
+		}
+		return tpl;
+	}
+	replaceIf(tpl,data){
+		const reg = /<([a-z]+)\s+:if="([^"]+)"([\s\S]*?)<\/\1>(\s*<\1\s+:elif="[^"]+"[\s\S]*?<\/\1>)*(\s*<\1\s+:else[\s\S]*?<\/\1>)?/gi;
+		const res = tpl.replace(reg,(match, tag, expIf,_if,_elif,_else)=>{
+			const test = x=>new Function('d',`with(d){return ${x}}`)(data);
+			if (test(expIf)) return `<${tag}${_if}</${tag}>`;
+			if (_elif) {
+				const elifReg = /<([a-z]+)\s+:elif="([^"]+)"((?:(?!<\1\b)[\s\S])*)<\/\1>/g;
+				let m;
+				while ((m = elifReg.exec(_elif))) {
+					if (test(m[2])) return `<${tag}${m[3]}</${tag}>`;
+				}
+			}
+			if (_else){
+				_else = _else.replace(':else=""',':else')
+				const elseReg = _else.match(/<([a-z]+)\s+:else((?:(?!<\1\b)[\s\S])*)<\/\1>/);
+				if (elseReg) return `<${tag}${elseMatch[2]}</${tag}>`;
+			}
+			return '';
+		});
+		return res;
+	}
+	replaceExp(tpl,data){
+		return tpl.replace(/{{([\s\S]+?)}}/g,(m,e)=>{
+			try{
+				return new Function('d',`with(d){return ${e}}`)(data);
+			}catch{
+				return'';
+			}
+		});
+	}
+}
+
+class Page {
+	id    = '';
+	#data = {};
+	constructor(opt){
+		this.as(opt).#runLoad();
+	}
+	//load(){}
+	$(i){
+		return typeof i=='string'?document.getElementById(i):i;
+	}
+	as(...b){
+		return Object.assign(this,...b)
+	}
+	get data(){
+		return this.#data; 
+	}
+	set data(d){
+		this.#data = d;
+	}
+	set(val){
+		this.data = {...this.data,...val};
+		this.#runLoad()
+		return this
+	}
+	get regEvent(){
+		return this._regEvent; 
+	}
+	set regEvent(a){
+		(this._regEvent??=[]).push(...a);
+		this._regEvent = [...new Set(this.regEvent)];
+	}
+	set load(f){
+		(this._regLoad??=[]).push(f);
+	}
+	#runLoad(){
+		if (this._runLoad) return;
+		this._runLoad = true;
+		try {
+			this._regLoad.map(async (f)=>await f.call(this))
+		} finally {
+			delete this._runLoad;
+		}
+	}
+};
+(p=>p.as({ 
+	tpl:[],
+	async load(){
+		const {$,tpl} = this;
+		await tpl.map(async (t)=>{
+			const {id,html,file}  = t;
+			if(!html){
+				if(file){
+					const f    = file.replace(/(\.tpl)?$/,'.tpl');
+					const res  = await fetch(f);
+					const text = await res.text();
+					t.html     = text;
+				}else{
+					const code = $(id).innerHTML;
+					t.html = code.replace(/&gt;/g,'>').replace(/(\w+)=\"\"/g,'$1');
+				}
+			}
+		});
+		this.showHTML()
+	},
+	showHTML(iv=-1){
+		const {tpl,data} = this;
+		tpl.map((t,i)=>{
+			if(iv !== -1 && iv !== i) return
+			const {id,html}  = t;
+			if(html){
+				const {html:h} = new Import({tpl:html,data});
+				this.$(id).innerHTML  = h;
+				this.$(id).removeAttribute('hidden');
+			}
+		})
+	}
+}))(Page.prototype);
+(p=>p.as({
+	regEvent:['input','keyup','click','focus','change'],
+	load(){
+		this.regEvent.map(k=>this.on(k));
+	},
+	on(type){
+		const closest = (a,b)=>{
+			while (a && a.nodeType !== 9){
+				if (a.matches(b)) return a;
+				a = a.parentNode;
+			}
+			return null;
+		}
+		const body = this.$(this.id||document.body);
+		const eventHandler = e=>{
+			let t = closest(e.target,`[${type}]`);
+			if(!t) return;
+			const f = t.getAttribute(type);
+			if(t._boundEvent) return;
+			t.removeAttribute(type);
+			t._boundEvent = true;
+			t.addEventListener(type,(x)=>{
+				if(this[f]) this[f].call(this,t,x);
+			});
+			t.dispatchEvent(new Event(type));
+		}
+		body.addEventListener(type, eventHandler);
+	}
+}))(Page.prototype);
+
+document.oncontextmenu = () => false;
+class clocks {
+	t = 1;   // 中文 1
+	r = 360; // 反向转 -360
+	constructor(c){
+		c && Object.assign(this,c);
+	}
+	cn(n,k){
+		let s = i=>[k,'一','二','三','四','五','六','七','八','九'][i];
+		let cn = String(n).split``.map(s);
+		cn = k?cn.filter(x=>x).join(''):cn.join('十')||'零';
+		return cn.replace(/一十/g,'十');
+	}
+	send(len,init,key){
+		let current = 0; 
+		const deg  = this.r / len;
+		const degs = -(deg * init);
+		const data = Array.from({length:len},(_,i)=>{
+			if(init==i) current = i;
+			if(len == 1){
+				i = init;
+			}else if(len != 24 && len != 60){
+				i++;
+			}
+			let str = (this.t == 0)?i.zero():this.cn(i,len==1?'零':'');
+			return {
+				val:str + key
+			}
+		});
+		return {current,deg,degs,data} 
+	}
+	read(){
+		const [Y,m,d,Z,h,i,s] = Date('Y.m.D.Z.H.i.s').split('.');
+		const days  = new Date(Y,m,0).getDate();
+		const yList = this.send(1,Y,'');
+		yList.week  = Z;
+		const mList = this.send(12,m-1,'月');
+		const dList = this.send(days,d-1,'日');
+		const hList = this.send(24,h,this.t?'时':'点');
+		const iList = this.send(60,i,'分');
+		const sList = this.send(60,s,'秒');
+		return [yList,mList,dList,hList,iList,sList]
+	}
+}
+!function(){
+	const clock = new clocks();
+	const app   = new Page({
+		tpl:[
+			{id:'clock'}, 
+			{id:'footer'}
+		],
+		clock:null,
+		data:{
+			clock:clock.read(),
+			familyIdx:0,
+			familyList:['','song','kai'], 
+			familyText:['默','宋','楷']
+		}, 
+		load(){
+			const ck = this.$('clock');
+			const f = s=>{
+				const cd = clock.read();
+				const dl = document.querySelectorAll('#clock>dl');
+				dl.forEach((x,i)=>{
+					const {current,degs} = cd[i];
+					const dd = x.querySelectorAll(':scope > dd');
+					x.style.transform  = 'rotate('+ degs +'deg)';
+					dd.forEach(i=>i.classList.remove('curr'));
+					dd[current]?.classList.add('curr');
+				});
+				ck.classList.add('start');
+			}
+			clock.t && ck.classList.add('cn');
+			this.clock = setInterval(f,1000);
+		},
+		onFamily(e){
+			let {familyIdx,familyList,familyText} = this.data;
+			familyIdx++;
+			if(familyIdx >= familyList.length) familyIdx = 0;
+			this.data.familyIdx = familyIdx; 
+			
+			const ck = this.$('clock');
+			ck.classList.remove(...familyList.filter(x=>x));
+			
+			const family = familyList[familyIdx];
+			family && ck.classList.add(family);
+		
+			e.innerHTML = familyText[familyIdx];
+		},
+		onCharset(){
+			if(this.s) return;
+			this.s = 1;
+			clearInterval(this.clock);
+			clock.t  = clock.t?0:1;
+			const ck = this.$('clock');
+			const dl = document.querySelectorAll('#clock>dl');
+			ck.classList.remove('start');
+			dl.forEach(x=>x.style.rotate = '0deg');
+			setTimeout(()=>{
+				ck.classList.toggle('cn');
+				this.set({clock:clock.read()});
+				delete this.s;
+			},2000)
+		}
+	})
+}();
+</script>
+</body>
+</html>
