@@ -28,3 +28,4 @@ http://jl.sdrenren.com/clock.html
 📄 开源协议
 本项目基于 MIT License 开源，可免费学习、使用、修改，保留原开源协议即可。
 
+<img width="1041" height="592" alt="功能说明" src="https://github.com/user-attachments/assets/5bc1a73a-c1ce-4d1e-b921-ec17d0b039d6" />
